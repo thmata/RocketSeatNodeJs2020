@@ -21,7 +21,6 @@ function verifyIfExistAccountCPF(req, res, next) {
     req.customer = customer;
 
     return next();
-
 }
 
 /*
@@ -59,6 +58,24 @@ app.get("/statement", verifyIfExistAccountCPF, (req, res) => {
     const { customer } = req;
     return res.json(customer.statement);
 })
+
+// Operação para adicionar dinheiro dentro da conta.
+app.post("/deposit", verifyIfExistAccountCPF, (req, res) => {
+    const { description, amount } = req.body;
+
+    const { customer } = req;
+
+    const statementOperation = {
+        description,
+        amount,
+        created_at: new Date(),
+        type: "credit"
+    }
+
+    customer.statement.push(statementOperation)
+
+    return res.status(201).send()
+});
 
 
 
