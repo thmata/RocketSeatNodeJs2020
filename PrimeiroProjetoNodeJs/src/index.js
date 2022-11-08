@@ -42,6 +42,7 @@ function getBalance(statement) {
  statement -> []
 */
 
+// Criação de uma conta
 app.post('/account', (req, res) => {
     const { cpf, name } = req.body;
 
@@ -62,7 +63,6 @@ app.post('/account', (req, res) => {
     return res.status(201).send()
 
 });
-
 
 // Consulta de Statement por cpf
 app.get("/statement", verifyIfExistAccountCPF, (req, res) => {
@@ -112,6 +112,7 @@ app.post("/withdraw", verifyIfExistAccountCPF, (req,res) => {
     return res.status(201).send();
 })
 
+// Realizando consulta por data "ano-mes-dia"
 app.get("/statement/date", verifyIfExistAccountCPF, (req, res) => {
     const { customer } = req;
     const { date } = req.query;
@@ -122,6 +123,41 @@ app.get("/statement/date", verifyIfExistAccountCPF, (req, res) => {
 
     return res.json(statement);
 })
+
+// Atualizar um usuário.
+app.put("/account", verifyIfExistAccountCPF, (req, res) => {
+    const { name } = req.body;
+    const { customer } = req;
+
+    customer.name = name;
+
+    return response.status(201).send()
+})
+
+
+app.get("/account", verifyIfExistAccountCPF, (req,res) => {
+    const { customer } = req;
+
+    return res.json(costumers);
+})
+
+app.delete("/account", verifyIfExistAccountCPF, (req,res) => {
+    const { costumer } = req;
+
+    costumers.splice(costumer, 1)
+
+    return res.status(200).json(costumers);
+})
+
+app.get("/balance", verifyIfExistAccountCPF, (req, res) => {
+    const { costumer } = req;
+
+    const balance = getBalance(costumer.statement);
+
+    return res.json(balance);
+})
+
+
 
 
 
