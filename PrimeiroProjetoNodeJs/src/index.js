@@ -134,7 +134,6 @@ app.put("/account", verifyIfExistAccountCPF, (req, res) => {
     return response.status(201).send()
 })
 
-
 app.get("/account", verifyIfExistAccountCPF, (req,res) => {
     const { customer } = req;
 
